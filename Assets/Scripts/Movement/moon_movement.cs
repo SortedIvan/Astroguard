@@ -11,94 +11,41 @@ public class moon_movement : MonoBehaviour
     public bool player_is_controlling_a;
     public bool player_is_controlling_b;
 
-    private float radius = 2f;
+    public float radius = 8f;
+
+    // Possible control combiations
+    public KeyCode switch_rotation_moon_a;
+    public KeyCode speed_up_rotation_moon_a;
+
+    public KeyCode switch_rotation_moon_b;
+    public KeyCode speed_up_rotation_moon_b;
+
+    private Vector3 planet_position;
+    private bool rotating_left;
 
 
-    //int[] array1 = new int[] { 1, 3, 5, 7, 9 };
-    private KeyCode[] movement_keys_a = new KeyCode[]
+    private void Start()
     {
-        KeyCode.Q, KeyCode.W
-    };
-
-    private KeyCode[] movement_keys_b = new KeyCode[]
-    {
-       KeyCode.O, KeyCode.P
-    };
-
-    // Update is called once per frame
-    void Update()
-    {
-        set_player_controlling_moon_a();
-        set_player_controlling_moon_b();
-        circular_motion();
+        rotating_left = false;
     }
 
-    private void circular_motion()
+    private void Update()
     {
-        Vector3 circleCenter = new Vector3(planet.transform.position.x, planet.transform.position.y, 0);
-        if (player_is_controlling_a)
+        if (Input.GetKeyDown(switch_rotation_moon_a))
         {
-            Vector3 offset = moon_a.transform.position - circleCenter;
-            offset.Normalize();
-            offset = offset * radius;
-            moon_a.transform.position = offset;
-        }
-        if (player_is_controlling_b)
-        {
-            Vector3 offset = moon_b.transform.position - circleCenter;
-            offset.Normalize();
-            offset = offset * radius;
-            moon_b.transform.position = offset;
-        }
-
-
-    }
-
-    private void set_player_controlling_moon_a()
-    {
-        for (int i = 0; i < movement_keys_a.Length; i++)
-        {
-            if (Input.GetKey(movement_keys_a[i]))
-            {
-                player_is_controlling_a = true;
-                if (movement_keys_a[i] == KeyCode.Q)
-                {
-                    //moon_a.transform.position += rotation_speed * Time.deltaTime * Vector3.up;
-                    moon_a.GetComponent<Rigidbody2D>().MovePosition(new Vector2(1, 0) * rotation_speed * Time.deltaTime);
-                }
-                if (movement_keys_a[i] == KeyCode.W)
-                {
-                    //moon_a.transform.position += rotation_speed * Time.deltaTime * Vector3.down;
-                    moon_a.GetComponent<Rigidbody2D>().MovePosition(new Vector2(0, 1) * rotation_speed * Time.deltaTime);
-                }
-            }
-            if (Input.GetKeyUp(movement_keys_a[i]) && player_is_controlling_a)
-            {
-                player_is_controlling_a = false;
-            }
-
+            rotating_left = !rotating_left;
         }
     }
 
-    private void set_player_controlling_moon_b()
+    private void FixedUpdate()
     {
-        for (int i = 0; i < movement_keys_b.Length; i++)
+        planet_position = radius * Vector3.Normalize(this.transform.position - planet.transform.position) + planet.transform.position;
+        this.transform.position = planet_position;
+        if (rotating_left)
         {
-            if (Input.GetKey(movement_keys_b[i]))
-            {
-                player_is_controlling_b = true;
-            }
-            if (Input.GetKeyUp(movement_keys_b[i]) && player_is_controlling_b)
-            {
-                player_is_controlling_b = false;
-            }
-           
+            transform.RotateAround(planet.transform.position, new Vector3(0, 0, 1), rotation_speed);
         }
-    }
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        transform.RotateAround(planet.transform.position, new Vector3(0, 0, -1), rotation_speed);
     }
 
 }

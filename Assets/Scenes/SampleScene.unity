@@ -216,7 +216,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1765772995}
   - component: {fileID: 1765772994}
-  - component: {fileID: 1765772993}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -224,24 +223,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1765772993
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1765772992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7da1a11568a54ba4dab48f1e6ac70402, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planet: {fileID: 1765772992}
-  moon_a: {fileID: 1903975192}
-  moon_b: {fileID: 0}
-  rotation_speed: 5
-  player_is_controlling_a: 0
-  player_is_controlling_b: 0
 --- !u!212 &1765772994
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -420,24 +401,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1903975195
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &1903975195
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903975192}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da1a11568a54ba4dab48f1e6ac70402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planet: {fileID: 1765772992}
+  moon_a: {fileID: 0}
+  moon_b: {fileID: 0}
+  rotation_speed: 2
+  player_is_controlling_a: 0
+  player_is_controlling_b: 0
+  radius: 8
+  switch_rotation_moon_a: 113
+  speed_up_rotation_moon_a: 0
+  switch_rotation_moon_b: 0
+  speed_up_rotation_moon_b: 0
