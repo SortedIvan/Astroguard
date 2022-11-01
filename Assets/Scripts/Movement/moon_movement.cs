@@ -45,7 +45,10 @@ public class moon_movement : MonoBehaviour
         {
             transform.RotateAround(planet.transform.position, new Vector3(0, 0, 1), rotation_speed);
         }
-        transform.RotateAround(planet.transform.position, new Vector3(0, 0, -1), rotation_speed);
+        else
+        {
+            transform.RotateAround(planet.transform.position, new Vector3(0, 0, -1), rotation_speed);
+        }
     }
 
 }
