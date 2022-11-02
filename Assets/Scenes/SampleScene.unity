@@ -320,11 +320,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moonA: {fileID: 1903975192}
   moonB: {fileID: 1712330174}
-  rotationSpeedMoonA: 1.5
-  rotationSpeedMoonB: 1.5
-  radiusOrbitMoonA: 6
-  radiusOrbitMoonB: 11
+  planet: {fileID: 1765772992}
+  rotationSpeedMoonA: 1.3
+  rotationSpeedMoonB: 1.3
+  radiusOrbitMoonA: 4
+  radiusOrbitMoonB: 6.5
   maxRotationSpeed: 2
+  slowDownRate: 0.8
   switchRotationMoonA: 113
   speedRotationMoonA: 119
   switchRotationMoonB: 111

@@ -5,13 +5,17 @@ using UnityEngine;
 public class PlanetMovement : MonoBehaviour
 {
     [Header("Adjustable Variables")]
-    [SerializeField] private GameObject moonA;
-    [SerializeField] private GameObject moonB;
+    public GameObject moonA;
+    public GameObject moonB;
+    public GameObject planet;
     public float rotationSpeedMoonA;
     public float rotationSpeedMoonB;
     public float radiusOrbitMoonA = 6f;
     public float radiusOrbitMoonB = 11f;
     public float maxRotationSpeed;
+    public float slowDownRate = 0.8f;
+
+    private float initRotSpeedA, initRotSpeedB;
 
     [Header("Controls")]
     public KeyCode switchRotationMoonA;
@@ -24,27 +28,29 @@ public class PlanetMovement : MonoBehaviour
     private bool rotatingLeftA;
     private bool rotatingLeftB;
 
+    // True when speed-up key is released to get to optimal speed
+    private bool slowDownB, slowDownA;
 
     private void Start()
     {
         rotatingLeftA = false;
         rotatingLeftB = false;
-        // Instead of assigning in inspector, we find the objects by name
-        moonA = GameObject.Find("MoonA");
-        moonB = GameObject.Find("MoonB");
+        initRotSpeedA = rotationSpeedMoonA;
+        initRotSpeedB = rotationSpeedMoonB;
     }
 
     private void Update()
     {
-
+        ControlMoons();
     }
+
 
 
     private void FixedUpdate()
     {
-        ControlMoons();
         RotateMoonA();
         RotateMoonB();
+        SlowDownMoons();
     }
 
     // Given the controls by the player, the moons can either switch their rotation
@@ -59,11 +65,16 @@ public class PlanetMovement : MonoBehaviour
 
         if (Input.GetKey(speedRotationMoonA))
         {
+            slowDownA = false;
             if (maxRotationSpeed <= rotationSpeedMoonA)
             {
                 rotationSpeedMoonA = maxRotationSpeed;
             }
             rotationSpeedMoonA += (float)Time.deltaTime;
+        }
+        if (Input.GetKeyUp(speedRotationMoonA))
+        {
+            slowDownA = true;
         }
         #endregion
 
@@ -75,40 +86,67 @@ public class PlanetMovement : MonoBehaviour
 
         if (Input.GetKey(speedRotationMoonB))
         {
+            slowDownB = false;
             if (maxRotationSpeed <= rotationSpeedMoonB)
             {
                 rotationSpeedMoonB = maxRotationSpeed;
             }
             rotationSpeedMoonB += (float)Time.deltaTime;
         }
+        if (Input.GetKeyUp(speedRotationMoonB))
+        {
+            slowDownB = true;
+        }
         #endregion
+    }
+
+    private void SlowDownMoons()
+    {
+        if (slowDownA)
+        {
+            if (rotationSpeedMoonA <= initRotSpeedA)
+            {
+                rotationSpeedMoonA = initRotSpeedA;
+                slowDownA = false;
+            }
+            rotationSpeedMoonA -= (float)Time.deltaTime * slowDownRate;
+        }
+        if (slowDownB)
+        {
+            if (rotationSpeedMoonB <= initRotSpeedB)
+            {
+                rotationSpeedMoonB = initRotSpeedB;
+                slowDownB = false;
+            }
+            rotationSpeedMoonB -= (float)Time.deltaTime * slowDownRate;
+        }
     }
 
     private void RotateMoonA()
     {
-        moonPositionA = radiusOrbitMoonA * Vector3.Normalize(moonA.transform.position - transform.position) + transform.position;
+        moonPositionA = radiusOrbitMoonA * Vector3.Normalize(moonA.transform.position - planet.transform.position) + planet.transform.position;
         moonA.transform.position = moonPositionA;
         if (rotatingLeftA)
         {
-            transform.RotateAround(transform.position, new Vector3(0, 0, 1), rotationSpeedMoonA);
+            moonA.transform.RotateAround(planet.transform.position, new Vector3(0, 0, 1), rotationSpeedMoonA);
         }
         else
         {
-            transform.RotateAround(transform.position, new Vector3(0, 0, -1), rotationSpeedMoonA);
+            moonA.transform.RotateAround(planet.transform.position, new Vector3(0, 0, -1), rotationSpeedMoonA);
         }
     }
 
     private void RotateMoonB()
     {
-        moonPositionB = radiusOrbitMoonB * Vector3.Normalize(moonB.transform.position - transform.position) + transform.position;
+        moonPositionB = radiusOrbitMoonB * Vector3.Normalize(moonB.transform.position - planet.transform.position) + planet.transform.position;
         moonB.transform.position = moonPositionB;
         if (rotatingLeftB)
         {
-            transform.RotateAround(transform.position, new Vector3(0, 0, 1), rotationSpeedMoonB);
+            moonB.transform.RotateAround(planet.transform.position, new Vector3(0, 0, 1), rotationSpeedMoonB);
         }
         else
         {
-            transform.RotateAround(transform.position, new Vector3(0, 0, -1), rotationSpeedMoonB);
+            moonB.transform.RotateAround(planet.transform.position, new Vector3(0, 0, -1), rotationSpeedMoonB);
         }
-    }
+    }   
 }
