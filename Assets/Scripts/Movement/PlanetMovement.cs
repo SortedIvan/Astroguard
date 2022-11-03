@@ -13,11 +13,11 @@ public class PlanetMovement : MonoBehaviour
     public float radiusOrbitMoonA = 6f;
     public float radiusOrbitMoonB = 11f;
     public float maxRotationSpeed;
-    public float slowDownRate = 0.8f;
+    public float slowDownRate = 0.8f; // The bigger the value, the faster it slows down
 
     private float initRotSpeedA, initRotSpeedB;
 
-    [Header("Controls")]
+    [Header("Controls")] // Controls customizable for moon movement
     public KeyCode switchRotationMoonA;
     public KeyCode speedRotationMoonA;
     public KeyCode switchRotationMoonB;
